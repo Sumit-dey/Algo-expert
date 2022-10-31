@@ -1,0 +1,38 @@
+
+#include <vector>
+using namespace std;
+
+// This is the class of the input root. Do not edit it.
+class BinaryTree {
+public:
+  int value;
+  BinaryTree *left = nullptr;
+  BinaryTree *right = nullptr;
+
+  BinaryTree(int value);
+};
+
+std::pair<BinaryTree *, BinaryTree *> binaryTreeTraverse(BinaryTree *root) {
+  if (root->left == nullptr and root->right == nullptr) {
+    return {root, root}; //For single node, start and end node is same
+  }
+  std::pair<BinaryTree *, BinaryTree *> lNode{root, root}, rNode{root, root};
+  if (root->left != nullptr) {
+    lNode = binaryTreeTraverse(root->left);
+    lNode.second->right = root; //Left subtree's last node's right ptr points to current node
+    root->left = lNode.second;  //current node's left ptr points to last node of left subtree
+  }
+  if (root->right != nullptr) {
+    rNode = binaryTreeTraverse(root->right);
+    root->right = rNode.first;  //Current node's right ptr points to first node of the right subtree
+    rNode.first->left = root;   //Right subtree's last node's left ptr points to current node.
+  }
+  return {lNode.first, rNode.second}; //Return first as left subtree first node and second as last node of right subtree
+}
+
+BinaryTree *flattenBinaryTree(BinaryTree *root) {
+  std::pair<BinaryTree *, BinaryTree *> head;
+  head = binaryTreeTraverse(root);
+  return head.first;
+}
+
