@@ -44,7 +44,7 @@ vector<int> solution(vector<int> array){
             break;
         }
     }
-    return result
+    return result:
 
 
 
